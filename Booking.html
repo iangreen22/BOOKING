@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOOK.ME</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css"
+        integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div id="app">
+
+        <!--------------------------------------------------------------- NAVBAR ---------------------------------------------------->
+        <nav>
+            <div class="flex justify-center items-center mt-2 fixed top-0 left-0 right-0 z-99">
+                <div class="bg-black/5 backdrop-blur-md w-[80vw] h-20 flex justify-center items-center rounded-full">
+                    <div class="grid grid-cols-3 py-10 px-10 w-full ">
+                        <div @click="closeModal()" class="flex flex-col justify-start cursor-pointer">
+                            <h1 class="text-3xl/6 font-bold text-orange-500">BOOK.ME</h1>
+                            <p class="text-orange-500">HOTELS & RESORTS</p>
+                        </div>
+
+                        <div class="flex justify-center items-center gap-5">
+                            <h1 @click="showHotels()"
+                                class=" text-zinc-900 text-lg hover:underline font-semibold cursor-pointer ">HOTELS
+                            </h1>
+                            <h1 @click="showResorts()"
+                                class=" text-zinc-900 text-lg hover:underline font-semibold cursor-pointer ">
+                                RESORTS</h1>
+                            <h1 @click="showAirbnbs()"
+                                class=" text-zinc-900 text-lg hover:underline font-semibold cursor-pointer ">
+                                AIRBNBS</h1>
+                            <h1 @click="showExperiences()"
+                                class=" text-zinc-900 text-lg hover:underline font-semibold cursor-pointer ">
+                                EXPERIENCES</h1>
+                        </div>
+                        <div class="flex justify-end items-center gap-2">
+                            <!-- 
+                            <button @click="showBooking()"
+                                class="text-zinc-900 text-lg hover:underline font-semibold cursor-pointer">
+                                Booking Details {{ toBook.length }}
+                            </button> -->
+                            <button @click="booked()"
+                                class="text-white text-center text-md rounded-full bg-orange-500 w-40 h-10 p-2 hover:text-sm hover:border hover:border-white cursor-pointer">
+                                <i class="fa-regular fa-calendar-check"></i>
+                                MY BOOKINGS
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!------------------------------------------------------------- HERO SECTION ------------------------------------------------>
+        <section>
+            <div
+                class="bg-[url('https://www.hotelsviva.com/o/adaptive-media/image/1262035/1920-total/KMAL4946.jpg?t=1744102316568')]  bg-cover bg-center w-full h-screen">
+
+                <div class="flex flex-col justify-center items-start h-full mx-20 ">
+                    <div>
+
+                        <h1 class="text-7xl text-white font-semibold">Find
+                            your
+                            <br> <span class="font-serif font-normal text-orange-500 italic">somewhere</span>.
+                        </h1>
+                        <p class="mt-6 max-w-xl text-lg text-white/85 font-semibold">Thoughtfully picked
+                            stays,
+                            slow
+                            mornings, and unforgettable little adventures. Your kind of getaway is closer than you
+                            think.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!------------------------------------------------------------ HOTELS SECTION ----------------------------------------------->
+        <section>
+            <div v-if="hotelS" id="hotels" class="h-screen w-full fixed top-0 left-0 right-0 z-50">
+                <div @click="closeModal()" class="fixed top-0 left-0 bg-black/50 w-full h-screen"></div>
+                <div
+                    class="relative flex justify-center items-center h-160 w-full bg-white rounded-br-[50px] rounded-bl-[50px]">
+                    <div class="grid grid-cols-6 gap-5 mt-10 mx-10">
+                        <div v-for="index in hotels" :key="index.id"
+                            class="h-100 w-55 bg-white/90 shadow-md hover:scale-101 duration-100 cursor-pointer">
+
+                            <img :src="index.img" alt="" class="h-60 w-full hover:scale-105 duration-100">
+                            <div class="flex flex-col justify-between px-3 pb-2">
+                                <div>
+                                    <p class="text-md font-bold mt-2">{{index.name}}</p>
+                                    <p>Php <span
+                                            class="text-red-600 font-semibold text-xl font-mono">{{index.price}}</span>
+                                    </p>
+                                </div>
+                                <button @click="bookNow(index)"
+                                    class="mt-5 bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 cursor-pointer">BOOK
+                                    NOW</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!------------------------------------------------------------ RESORTS SECTION ---------------------------------------------->
+        <section>
+            <div v-if="resortS" id="hotels" class="h-screen w-full fixed top-0 left-0 right-0 z-50">
+                <div @click="closeModal()" class="fixed top-0 left-0 bg-black/50 w-full h-screen"></div>
+                <div
+                    class="relative flex justify-center items-center h-160 w-full bg-white rounded-br-[50px] rounded-bl-[50px]">
+                    <div class="grid grid-cols-6 gap-5 mt-10 mx-10">
+                        <div v-for="index in resorts" :key="index.id"
+                            class="h-100 w-55 bg-white/90 shadow-md hover:scale-101 duration-100 cursor-pointer">
+
+                            <img :src="index.img" alt="" class="h-60 w-full hover:scale-105 duration-100">
+                            <div class="flex flex-col justify-between px-3 pb-2">
+                                <div>
+                                    <p class="text-md font-bold mt-2">{{index.name}}</p>
+                                    <p>Php <span
+                                            class="text-red-600 font-semibold text-xl font-mono">{{index.price}}</span>
+                                    </p>
+                                </div>
+                                <button @click="bookNow(index)"
+                                    class="mt-5 bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 cursor-pointer">BOOK
+                                    NOW</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!------------------------------------------------------------ AIRBNB SECTION ----------------------------------------------->
+        <section>
+            <div v-if="airbnbS" id="hotels" class="h-screen w-full fixed top-0 left-0 right-0 z-50">
+                <div @click="closeModal()" class="fixed top-0 left-0 bg-black/50 w-full h-screen"></div>
+                <div
+                    class="relative flex justify-center items-center h-160 w-full bg-white rounded-br-[50px] rounded-bl-[50px]">
+                    <div class="grid grid-cols-6 gap-5 mt-10 mx-10">
+                        <div v-for="index in airbnbs" :key="index.id"
+                            class="h-100 w-55 bg-white/90 shadow-md hover:scale-101 duration-100 cursor-pointer">
+
+                            <img :src="index.img" alt="" class="h-60 w-full hover:scale-105 duration-100">
+                            <div class="flex flex-col justify-between px-3 pb-2">
+                                <div>
+                                    <p class="text-md font-bold mt-2">{{index.name}}</p>
+                                    <p>Php <span
+                                            class="text-red-600 font-semibold text-xl font-mono">{{index.price}}</span>
+                                    </p>
+                                </div>
+                                <button @click="bookNow(index)"
+                                    class="mt-5 bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 cursor-pointer">BOOK
+                                    NOW</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!---------------------------------------------------------- EXPERIENCES SECTION -------------------------------------------->
+        <section>
+            <div v-if="experienceS" id="hotels" class="h-screen w-full fixed top-0 left-0 right-0 z-50">
+                <div @click="closeModal()" class="fixed top-0 left-0 bg-black/50 w-full h-screen"></div>
+                <div
+                    class="relative flex justify-center items-center h-160 w-full bg-white rounded-br-[50px] rounded-bl-[50px]">
+                    <div class="grid grid-cols-6 gap-5 mt-10 mx-10">
+                        <div v-for="index in experiences" :key="index.id"
+                            class="h-100 w-55 bg-white/90 shadow-md hover:scale-101 duration-100 cursor-pointer">
+
+                            <img :src="index.img" alt="" class="h-60 w-full hover:scale-105 duration-100">
+                            <div class="flex flex-col justify-between px-3 pb-2">
+                                <div>
+                                    <p class="text-md/1 font-bold mt-2">{{index.name}}</p>
+                                    <p class="mt-2">Php <span
+                                            class="text-red-600 font-semibold text-xl font-mono">{{index.price}}</span>
+                                    </p>
+                                </div>
+                                <button @click="bookNow(index)"
+                                    class="mt-3 bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 cursor-pointer">BOOK
+                                    NOW</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!---------------------------------------------------------- BOOKING MODAL SECTION ------------------------------------------->
+        <section>
+            <div v-if="bookingForm" id="hotels" class="h-screen w-full fixed top-0 left-0 right-0 z-50F">
+                <div @click="closeModal()" class="fixed top-0 left-0 bg-black/50 w-full h-screen"></div>
+                <div
+                    class=" relative flex justify-center items-center h-160 w-full bg-white rounded-br-[50px] rounded-bl-[50px]">
+                    <div
+                        class=" mt-10 rounded-lg h-120 w-180 px-10 py-5 bg-zinc-100 drop-shadow-lg flex flex-col justify-start items-center gap-5">
+
+                        <div class="w-full">
+                            <!-- <div class="w-full">
+                                <h1 class="text-xl font-bold text-center">Personal Details</h1>
+                                <div>
+                                    <h1 class="font-semibold ml-2">Full Name</h1>
+                                    <div class="grid grid-cols-2 gap-5">
+                                        <input type="text" placeholder="First Name"
+                                            class="border border-gray-300 outline-none p-2 bg-zinc-200">
+                                        <input type="text" placeholder="Last Name"
+                                            class="border border-gray-300 outline-none p-2 bg-zinc-200">
+                                    </div>
+                                </div>
+                                <div class="w-full">
+                                    <div class="grid grid-cols-2 gap-5 mt-2">
+                                        <div>
+                                            <h1 class="font-semibold ml-2">Email</h1>
+                                            <input type="email" placeholder="Email"
+                                                class="border border-gray-300 outline-none p-2 bg-zinc-200 w-full">
+                                        </div>
+                                        <div>
+                                            <h1 class="font-semibold ml-2">Phone</h1>
+                                            <input type="number" placeholder="Phone Number"
+                                                class="border border-gray-300 outline-none p-2 bg-zinc-200 w-full">
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div> -->
+                            <h1 class="text-xl text-center font-bold">Booking Details</h1>
+                            <div v-if="choosen" class="flex flex-col justify-center items-center gap-5">
+                                <div v-for="item in toBook" :key="item.id"
+                                    class="h-20 mt-2 w-full bg-zinc-200 flex justify-center items-center rounded-md">
+                                    <div class="flex justify-between items-center gap-5 w-full px-5">
+                                        <img :src="item.img" alt="" class="h-16 w-20 ">
+
+                                        <h1 class="font-semibold">{{ item.name }}</h1>
+                                        <p>Php <span class="font-bold text-lg text-red-600 font-mono">{{ item.price
+                                                }}</span>
+                                        </p>
+
+
+                                    </div>
+                                </div>
+                                <button @click="confirmBooking()"
+                                    class=" bg-lime-500 text-white text-sm py-2 px-2 rounded-md hover:bg-lime-600 cursor-pointer">
+                                    CONFIRM BOOKING
+                                </button>
+                                <button @click="cancelBooking()"
+                                    class=" bg-red-500 text-white text-sm py-2 px-2 rounded-md hover:bg-red-600 cursor-pointer">
+                                    CANCEL
+                                </button>
+
+                                <!-- <div>
+                                    <div class="grid grid-cols-2 gap-5 mt-2">
+                                        <div>
+                                            <h1 class="font-semibold ml-2">Date</h1>
+                                            <input type="date"
+                                                class="border border-black outline-none p-2 bg-zinc-200 w-full">
+                                        </div>
+                                        <div>
+                                            <h1 class="font-semibold ml-2">No. of Guests</h1>
+                                            <input type="number"
+                                                class="border border-black outline-none p-2 bg-zinc-200 w-full">
+                                        </div>
+                                    </div>
+                                </div> -->
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+        </section>
+
+        <!------------------------------------------------------------ MY BOOKING SECTION ------------------------------------------->
+        <section>
+            <div v-if="myBookingS" class="h-screen w-full fixed top-0 left-0 right-0 z-50F">
+                <div @click="closeModal()" class="fixed top-0 left-0 bg-black/50 w-full h-screen"></div>
+                <div
+                    class=" relative flex justify-center items-center min-h-160 w-full bg-white/5 backdrop-blur-md rounded-br-[50px] rounded-bl-[50px]">
+                    <div v-if="noBookingYet"
+                        class=" mt-10 rounded-lg h-120 w-180 px-10 py-5 bg-zinc-100 drop-shadow-lg flex flex-col justify-center items-center gap-5">
+                        <h1 class="text-center"> No bookings yet. Please book a hotel, resort, airbnb, or experience to
+                            see your booking
+                            details here.</h1>
+                        <button @click="closeModal()"
+                            class="mt-5 bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 cursor-pointer">CLOSE</button>
+                    </div>
+
+                    <div v-if="!noBookingYet"
+                        class="relative mt-10 rounded-lg h-120 w-180 px-10 py-5 bg-zinc-100 drop-shadow-lg flex flex-col justify-between items-center gap-5">
+                        <h1 class="text-xl font-bold text-center">Booking Status</h1>
+                        <div>
+                            <div v-for="i in Booking" :key="i.id"
+                                class="h-20 w-full bg-zinc-200 flex justify-center items-center rounded-md">
+                                <div class="grid grid-cols-3 w-full px-5">
+                                    <div class="flex items-center gap-2">
+                                        <img :src="i.img" alt="" class="h-15 w-15">
+                                        <h1 class="font-semibold">{{ i.name }}</h1>
+                                    </div>
+                                    <p class="flex justify-center items-center">Php <span
+                                            class="text-red-500 font-bold font-mono text-lg">{{ i.price }}</span></p>
+
+                                    <h1 class="flex justify-end items-center text-center text-lime-600 text-sm foont-bold"><i
+                                            class="fa-solid fa-circle"></i>
+                                        <span class="text-zinc-500 font-semibold">Confirmed</span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                        <button @click="closeModal()"
+                            class="mt-5 bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 cursor-pointer">CLOSE</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!------------------------------------------------------------ ABOUT SECTION ------------------------------------------------>
+        <section>
+            <div id="about" class="w-full bg-zinc-100 py-24">
+                <div class="max-w-6xl mx-auto px-6">
+
+                    <div class="grid md:grid-cols-2 gap-12 items-center">
+
+                        <!-- TEXT -->
+                        <div>
+                            <p class="text-orange-500 font-semibold">
+                                ABOUT BOOK.ME
+                            </p>
+
+                            <h2 class="text-5xl font-bold text-zinc-800 mt-3">
+                                Your next getaway
+                                <span class="text-orange-500 font-serif italic">
+                                    starts here.
+                                </span>
+                            </h2>
+
+                            <p class="text-zinc-600 mt-6 ">
+                                BOOK.ME is your simple way to discover hotels, resorts,
+                                unique stays, and unforgettable experiences in the
+                                Philippines.
+                            </p>
+
+                            <p class="text-zinc-600 mt-4 ">
+                                Whether you're planning a relaxing weekend, a family
+                                vacation, or an exciting adventure, we help you find
+                                places that fit your travel style and budget.
+                            </p>
+
+                            <div class="grid grid-cols-3 gap-5 mt-8">
+
+                                <div>
+                                    <h3 class="text-3xl font-bold text-orange-500">
+                                        24/7
+                                    </h3>
+                                    <p class="text-sm text-zinc-500">
+                                        Booking Access
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <h3 class="text-3xl font-bold text-orange-500">
+                                        100+
+                                    </h3>
+                                    <p class="text-sm text-zinc-500">
+                                        Destinations
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <h3 class="text-3xl font-bold text-orange-500">
+                                        4
+                                    </h3>
+                                    <p class="text-sm text-zinc-500">
+                                        Stay Options
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="">
+                            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
+                                class="w-full h-96 object-cover rounded-3xl shadow-xl" alt="Travel destination">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-------------------------------------------------------------- CONTACT SECTION --------------------------------------------->
+        <section>
+            <div id="contact" class="w-full bg-white py-24">
+                <div class="max-w-6xl mx-auto px-6">
+
+                    <div class="text-center mb-12">
+                        <p class="text-orange-500 font-semibold tracking-widest">
+                            GET IN TOUCH
+                        </p>
+
+                        <h2 class="text-5xl font-bold text-zinc-800 mt-2">
+                            We'd love to hear from you.
+                        </h2>
+
+                        <p class="text-zinc-500 mt-4">
+                            Have a question about your booking? Send us a message.
+                        </p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-10">
+
+                        <!-- CONTACT INFORMATION -->
+                        <div class="bg-zinc-100 text-white rounded-3xl p-10">
+
+                            <h3 class="text-3xl font-bold text-zinc-900">
+                                Contact Information
+                            </h3>
+
+                            <p class="text-zinc-900 mt-4 leading-7"> Our team is ready to help you with your next
+                                destination, reservation, or travel experience.
+                            </p>
+
+                            <div class="space-y-6 mt-10">
+
+                                <div class="flex items-center gap-5">
+                                    <div class="w-12 h-12 rounded-full bg-orange-500 flex items-center justify-center">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                    </div>
+
+                                    <div>
+                                        <p class="font-semibold text-zinc-900">
+                                            Philippines
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-5">
+                                    <div class="w-12 h-12 rounded-full bg-orange-500 flex items-center justify-center">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </div>
+
+                                    <div>
+                                        <p class="font-semibold text-zinc-900">
+                                            book.me@yahoo.com
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-5">
+                                    <div class="w-12 h-12 rounded-full bg-orange-500 flex items-center justify-center">
+                                        <i class="fa-solid fa-phone"></i>
+                                    </div>
+
+                                    <div>
+                                        <p class="font-semibold text-zinc-900">
+                                            +63 900 000 0000
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- CONTACT FORM -->
+                        <div class="p-2">
+
+                            <div class="grid md:grid-cols-2 gap-5">
+
+                                <div>
+                                    <h1 class="font-semibold">
+                                        First Name
+                                    </h1>
+
+                                    <input type="text" placeholder="First Name"
+                                        class="w-full mt-2 p-3 border border-zinc-300 rounded-lg outline-none hover:border-orange-500">
+                                </div>
+
+                                <div>
+                                    <h1 class="font-semibold">
+                                        Last Name
+                                    </h1>
+
+                                    <input type="text" placeholder="Last Name"
+                                        class="w-full mt-2 p-3 border border-zinc-300 rounded-lg outline-none hover:border-orange-500">
+                                </div>
+
+                            </div>
+
+                            <div class="mt-5">
+                                <h1 class="font-semibold">
+                                    Email
+                                </h1>
+
+                                <input type="email" placeholder="your@email.com"
+                                    class="w-full mt-2 p-3 border border-zinc-300 rounded-lg outline-none hover:border-orange-500">
+                            </div>
+
+                            <div class="mt-5">
+                                <h1 class="font-semibold">
+                                    Message
+                                </h1>
+
+                                <textarea placeholder="Write your message..."
+                                    class="w-full mt-2 p-3 border border-zinc-300 rounded-lg outline-none hover:border-orange-500"></textarea>
+                            </div>
+
+                            <button
+                                class="mt-5 bg-orange-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-600 transition">
+                                SEND MESSAGE
+                                <i class="fa-solid fa-paper-plane ml-2"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!----------------------------------------------------------------- FOOTER --------------------------------------------------->
+        <footer class="bg-zinc-950 text-white">
+            <div>
+                <div class="max-w-6xl mx-auto px-6 py-16">
+
+                    <div class="grid md:grid-cols-4 gap-10">
+
+                        <!-- BRAND -->
+                        <div class="md:col-span-1">
+
+                            <h1 class="text-3xl font-bold text-orange-500">
+                                BOOK.ME
+                            </h1>
+
+                            <p class="text-orange-500 text-sm tracking-wider">
+                                HOTELS & RESORTS
+                            </p>
+
+                            <p class="text-zinc-400 mt-5 leading-7">
+                                Find your somewhere.
+                                Discover beautiful places, comfortable stays,
+                                and unforgettable experiences.
+                            </p>
+
+                            <!-- SOCIAL MEDIA -->
+                            <div class="flex gap-3 mt-6">
+
+                                <a href="#"
+                                    class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center hover:bg-orange-500 transition">
+                                    <i class="fa-brands fa-facebook-f"></i>
+                                </a>
+
+                                <a href="#"
+                                    class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center hover:bg-orange-500 transition">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </a>
+
+                                <a href="#"
+                                    class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center hover:bg-orange-500 transition">
+                                    <i class="fa-brands fa-x-twitter"></i>
+                                </a>
+
+                                <a href="#"
+                                    class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center hover:bg-orange-500 transition">
+                                    <i class="fa-brands fa-tiktok"></i>
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                        <!-- EXPLORE -->
+                        <div>
+
+                            <h3 class="text-lg font-bold mb-5">
+                                EXPLORE
+                            </h3>
+
+                            <ul class="space-y-3 text-zinc-400">
+
+                                <li>
+                                    <a href="#" @click="showHotels()" class="hover:text-orange-500 transition">
+                                        Hotels
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#" @click="showResorts()" class="hover:text-orange-500 transition">
+                                        Resorts
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#" @click="showAirbnbs()" class="hover:text-orange-500 transition">
+                                        Airbnbs
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#" @click="showExperiences()" class="hover:text-orange-500 transition">
+                                        Experiences
+                                    </a>
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                        <!-- COMPANY -->
+                        <div>
+
+                            <h3 class="text-lg font-bold mb-5">
+                                COMPANY
+                            </h3>
+
+                            <ul class="space-y-3 text-zinc-400">
+
+                                <li>
+                                    <a href="#about" class="hover:text-orange-500 transition">
+                                        About Us
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#contact" class="hover:text-orange-500 transition">
+                                        Contact
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#" class="hover:text-orange-500 transition">
+                                        Privacy Policy
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#" class="hover:text-orange-500 transition">
+                                        Terms & Conditions
+                                    </a>
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-bold mb-5">
+                                STAY UPDATED
+                            </h3>
+
+                            <p class="text-zinc-400 mb-4">
+                                Get travel inspiration and special offers.
+                            </p>
+
+                            <div class="flex">
+
+                                <input type="email" placeholder="Your email"
+                                    class="w-full bg-zinc-800 px-4 py-3 rounded-l-lg outline-none">
+
+                                <button class="bg-orange-500 px-5 rounded-r-lg hover:bg-orange-600 transition">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="border-t border-zinc-800 mt-12 pt-6">
+                        <p class="text-zinc-500 text-center text-sm">
+                            © 2026 BOOK.ME. All rights reserved.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </footer>
+
+
+    </div>
+
+
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    hotels: [
+                        {
+                            id: 1,
+                            img: 'https://images.trvl-media.com/lodging/4000000/3160000/3152400/3152304/73acfcd0.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill',
+                            price: 14272,
+                            name: 'Apo View Hotel'
+
+                        },
+                        {
+                            id: 2,
+                            img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlJ_Itice9nE8sj_HnIVIyUgVmmT1XFnyiPHpodMMu-VmuH0moAx2XkEc&s=10',
+                            price: 12990,
+                            name: 'Waterfront Insular Hotel'
+
+                        },
+                        {
+                            id: 3,
+                            img: 'https://images.trvl-media.com/lodging/41000000/40150000/40145100/40145062/w3648h3840x0y0-f654b54b.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill',
+                            price: 4990,
+                            name: 'Dusit Thani Residences'
+
+                        },
+                        {
+                            id: 4,
+                            img: 'https://acaciahotelsdavao-com.b-cdn.net/wp-content/uploads/2024/09/FACADE-PORTRAIT-1.jpg',
+                            price: 5990,
+                            name: 'Acacia Hotel'
+
+                        },
+                        {
+                            id: 5,
+                            img: 'https://q-xx.bstatic.com/xdata/images/hotel/max500/14393725.jpg?k=3e8be64e456ead7d7d33dc21ebe7eecef5437df2fa18bd2d93164b46491e5eda&o=',
+                            price: 6990,
+                            name: 'Park Inn by Radisson'
+
+                        },
+                        {
+                            id: 6,
+                            img: 'https://photos.hotelbeds.com/giata/bigger/21/210615/210615a_hb_a_004.jpg',
+                            price: 7990,
+                            name: 'Royal Mandaya Hotel'
+
+                        },
+                    ],
+                    resorts: [
+                        {
+                            id: 1,
+                            img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtfBMIhypqUonyEuPNany04rPN894-yFfEVYS8_bXaLxOrVsn6QJJcSaNx&s=10',
+                            price: 9990,
+                            name: 'Amanpulo'
+
+                        },
+                        {
+                            id: 2,
+                            img: 'https://sitecore-cd-imgr.shangri-la.com/MediaFiles/4/3/3/%7B43355B78-4378-4951-A806-769D6B2709C1%7D2024SLBOWebsitebannermobilepic.jpg',
+                            price: 8990,
+                            name: 'Shangri-La Boracay'
+
+                        },
+                        {
+                            id: 3,
+                            img: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/576649757.jpg?k=ad2067eb6bc5b6c21d59ceb7eeee74d3d296ca806e7d49bffe84aec24592b71f&o=',
+                            price: 7990,
+                            name: 'Two Seasons Resort'
+
+                        },
+                        {
+                            id: 4,
+                            img: 'https://webbox.imgix.net/images/stgcgmhwvwllymvv/ef80a37d-c123-4be3-98e9-ad02a4a13cee.jpg?auto=format,compress&fit=crop&crop=entropy',
+                            price: 6990,
+                            name: 'Isla Cabana Resort'
+
+                        },
+                        {
+                            id: 5,
+                            img: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/5e/43/df/beac-pool-and-restaurant.jpg?w=900&h=500&s=1',
+                            price: 5990,
+                            name: 'Kandaya Resort'
+
+                        },
+                        {
+                            id: 6,
+                            img: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/57/fe/11/henann-resort-alona-beach.jpg?w=900&h=500&s=1',
+                            price: 4990,
+                            name: 'Hennan Resort Alona'
+
+                        },
+                    ],
+                    airbnbs: [
+                        {
+                            id: 1,
+                            img: 'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9S0lxUCSyd59ni5q6qC17Hf0sxSk2Ym0Vtx6hpFT5nDVGgSk4iKt6gdsn9zD_md-oVIIPZa22g9FpOPMdtwzxwBe-iMsz9nhY0A8WrjS8OO9HZEuGOtJYJ-exmCWH3IiY1LjqoT=s1360-w1360-h1020-rw',
+                            price: 9990,
+                            name: 'Narra Hill'
+
+                        },
+                        {
+                            id: 2,
+                            img: 'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SfHCnYF0NUvCSGdVK3_o2-QfXWXh4CzImwTByav4t8aYKCzgzEQ_v-cccuZOSPr3V2flXUvLvxCsvunbXneAA0D7cReq05zlWxlVWDfS8aFJBzPKW2hP7mSKWSuDFa26yJCqR6OLCFReTx=s1360-w1360-h1020-rw',
+                            price: 8990,
+                            name: 'Ataalaya Farmhouse '
+
+                        },
+                        {
+                            id: 3,
+                            img: 'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9T18mbzL00EdZIAwv25TwC9MZOYI75s3wCw8juXMKmJ8DTvGJ_QcNGHJ24EwQvTPVrGYhA-cpGrXLApbpjuptM_EuWewBjm9BJPXodkUMRiVoRXXa5Y4Ms6hk4adwJZgRygAStW=s1360-w1360-h1020-rw',
+                            price: 7990,
+                            name: 'Camp Treehouse'
+
+                        },
+                        {
+                            id: 4,
+                            img: 'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RY_pVKrs9vEWafqiGDEjw_jWUC7KqRWHXzAUHJsPT6P00MIkAUHbvBWpdvhkbHx1FysUvreQkCQe9WW01H0XqpKHF0zjN24ldsteIlMw_uODwIAbQpTEA5RsEd7nrNs2iyK9GnKOBSPaMc=s1360-w1360-h1020-rw',
+                            price: 6990,
+                            name: 'Floral Island '
+
+                        },
+                        {
+                            id: 5,
+                            img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlB-Fo5E0huZ89QMBEXSBXwnOJAr3B-1s5fovV2GXqQA&s',
+                            price: 5990,
+                            name: 'Pahuwayan Villa'
+
+                        },
+                        {
+                            id: 6,
+                            img: 'https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QstEcyZSn718s0lWfAyfIQLqjOiovD1dcP1wAAGjg0sdiH0hKPhL11wDz8jJFL-BdUVqkbR6tdrGwCcyinTjSyETs2NVlO5GJPePcTGJ_7Oq7wGrUg-u2kP8WC54rfdSx87bne-tWq6YYO=s1360-w1360-h1020-rw',
+                            price: 4990,
+                            name: 'Treehouse de Valentine'
+
+                        },
+                    ],
+                    experiences: [
+                        {
+                            id: 1,
+                            img: 'https://ak-d.tripcdn.com/images/1mi4e12000re71azr215A_W_320_0_R5.jpg_.webp?proc=source/trip',
+                            price: 9990,
+                            name: 'Island Hopping',
+                            place: 'El Nido, Palawan'
+
+                        },
+                        {
+                            id: 2,
+                            img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlVgu9SzYSn5NRjGDVlOIN6xBTftJDlUNOZr6cthXQig&s=10',
+                            price: 8990,
+                            name: 'Canyoneering',
+                            place: 'Kawasan Falls, Cebu'
+
+                        },
+                        {
+                            id: 3,
+                            img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqobPRRy9Zx952jwWfPqQQgmp6Z-u9XddvI1tDhdVRJnrXrBLBt8FDxIM&s=10',
+                            price: 7990,
+                            name: 'Trekking',
+                            place: 'Panimahawa Ridge, Bukidnon'
+
+                        },
+                        {
+                            id: 4,
+                            img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBCrxakIpBGrtqPIJ0u_pRolHZBIZWEVHjvqFdKr-giaxr4H-CrbGz6Vw&s=10',
+                            price: 6990,
+                            name: 'Whale Shark Diving',
+                            place: 'Oslob, Cebu'
+
+                        },
+                        {
+                            id: 5,
+                            img: 'https://i0.wp.com/backpackingwithabook.com/wp-content/uploads/2022/10/3.jpg?resize=940%2C788&ssl=1',
+                            price: 5990,
+                            name: 'Surfing',
+                            place: 'Cloud 9, Siargao'
+
+                        },
+                        {
+                            id: 6,
+                            img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkd6Q-eTHlph3DGQjWZRhOfNmVpMQkCeC-Bysij0kET0jECNnKKxCyeV4&s=10',
+                            price: 4990,
+                            name: 'ATV Riding',
+                            place: 'Mayon Volcano'
+
+                        },
+                    ],
+                    Booking: [],
+                    toBook: [],
+                    hotelS: false,
+                    resortS: false,
+                    airbnbS: false,
+                    experienceS: false,
+                    bookingForm: false,
+                    myBookingS: false,
+                    noBookingYet: true,
+                    choosen: true
+                }
+            },
+            methods: {
+                bookNow(index) {
+                    alert('Click OK to proceed with booking details');
+                    this.bookingForm = true;
+                    this.hotelS = false;
+                    this.resortS = false;
+                    this.airbnbS = false;
+                    this.experienceS = false;
+                    this.toBook.push(index);
+                },
+
+                confirmBooking() {
+                    alert('Booking confirmed! Thank you for booking with us.');
+                    this.bookingForm = false;
+                    this.noBookingYet = false;
+                    this.Booking.push({
+                        name: this.toBook[0].name,
+                        price: this.toBook[0].price,
+                        img: this.toBook[0].img
+                    });
+
+                    this.toBook.splice(0, 1);
+                },
+                cancelBooking() {
+
+                    this.bookingForm = false;
+                    this.hotelS = false;
+                    this.resortS = false;
+                    this.airbnbS = false;
+                    this.experienceS = false;
+                    this.toBook = [];
+                },
+                closeModal() {
+                    this.hotelS = false;
+                    this.resortS = false;
+                    this.airbnbS = false;
+                    this.experienceS = false;
+                    this.bookingForm = false;
+                    this.myBookingS = false;
+                    this.cancelBooking();
+                },
+
+                showBooking() {
+                    this.myBookingS = false;
+                    this.bookingForm = true;
+                    this.hotelS = false;
+                    this.resortS = false;
+                    this.airbnbS = false;
+                    this.experienceS = false;
+
+
+                },
+
+                booked() {
+                    this.myBookingS = true;
+                    this.bookingForm = false;
+                    this.hotelS = false;
+                    this.resortS = false;
+                    this.airbnbS = false;
+                    this.experienceS = false;
+
+                },
+                showHotels() {
+                    this.hotelS = true;
+                    this.resortS = false;
+                    this.airbnbS = false;
+                    this.experienceS = false;
+                    this.myBookingS = false;
+                    this.bookingForm = false;
+                },
+                showResorts() {
+                    this.hotelS = false;
+                    this.resortS = true;
+                    this.airbnbS = false;
+                    this.experienceS = false;
+                    this.myBookingS = false;
+                    this.bookingForm = false;
+                },
+                showAirbnbs() {
+                    this.hotelS = false;
+                    this.resortS = false;
+                    this.airbnbS = true;
+                    this.experienceS = false;
+                    this.myBookingS = false;
+                    this.bookingForm = false;
+                },
+                showExperiences() {
+                    this.hotelS = false;
+                    this.resortS = false;
+                    this.airbnbS = false;
+                    this.experienceS = true;
+                    this.myBookingS = false;
+                    this.bookingForm = false;
+                }
+            }
+
+        }).mount('#app');
+    </script>
+
+</body>
+
+</html>
